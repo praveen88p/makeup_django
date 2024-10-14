@@ -14,13 +14,11 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
 
-    # Get the port from the environment, default to 8000
-    port = os.environ.get('PORT', '8000')
-
-    # Automatically bind to 0.0.0.0:<PORT> when running the server
-    if len(sys.argv) == 1 or sys.argv[1] == 'runserver':
-        sys.argv = [sys.argv[0], '0.0.0.0:'+port]
-
+    # Automatically bind to 0.0.0.0:<PORT> for the runserver command if it's in arguments
+    if 'runserver' in sys.argv:
+        port = os.environ.get('PORT', '8000')
+        sys.argv[sys.argv.index('runserver') + 1:] = ['0.0.0.0:' + port]
+    
     execute_from_command_line(sys.argv)
 
 if __name__ == '__main__':
