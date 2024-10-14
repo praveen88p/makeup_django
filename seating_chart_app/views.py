@@ -19,21 +19,24 @@ def video_feed(request):
 
 # Generator function to read frames, process them, and serve as a video stream
 def gen(makeup_app):
-    cap = cv2.VideoCapture(0)  # Capture video from the webcam
+    cap = cv2.VideoCapture(0)  # Attempt to capture video from the webcam
+    
+    if not cap.isOpened():
+        # Log or print an error message
+        print("Error: Unable to access webcam.")
+        return
+        
     while cap.isOpened():
-        success, frame = cap.read()  # Read a frame from the webcam
+        success, frame = cap.read()
         if not success:
             break
 
-        # Process the frame using the makeup application (eyeshadow, eyeliner, lipstick, etc.)
         frame = makeup_app.process_frame(frame)
 
-        # Encode the frame in JPEG format
         ret, buffer = cv2.imencode('.jpg', frame)
-        frame = buffer.tobytes()  # Convert the frame to bytes
+        frame = buffer.tobytes()
 
-        # Yield the frame to the HTTP response to be displayed on the web page
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
-    cap.release()  # Release the webcam
+    cap.release()
