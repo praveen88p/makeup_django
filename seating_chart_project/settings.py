@@ -27,7 +27,9 @@ SECRET_KEY = os.environ.get('SECRET_KEY', "django-insecure-83)$w1ub_74d11_*nqiw_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['https://makeup-django.onrender.com', 'localhost']
+# In settings.py
+ALLOWED_HOSTS = ['makeup-django.onrender.com', '127.0.0.1', 'localhost']
+
 
 
 
@@ -60,7 +62,7 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [BASE_DIR / 'templates'],
-        "APP_DIRS": True,
+        "APP_DIRS": False,
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
